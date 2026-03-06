@@ -329,3 +329,58 @@ body {
     padding: 6px 10px;
   }
 }
+
+/* ========== CRT Scanline Overlay ========== */
+/*
+  A fixed pseudo-element adds subtle horizontal scan-line stripes over the
+  entire viewport. pointer-events: none ensures it never blocks interaction.
+  Disabled on the white theme via the data-theme attribute set by ThemeManager.
+*/
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.04) 0px,
+    rgba(0, 0, 0, 0.04) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+html[data-theme="white"] body::after {
+  display: none;
+}
+
+/* ========== Glitch Animation ========== */
+/*
+  Applied briefly to .ascii-art elements by Terminal.setupGlitch().
+  Two micro-jumps in skew + translate simulate CRT signal corruption.
+*/
+@keyframes glitch {
+  0% {
+    transform: none;
+  }
+  20% {
+    transform: skewX(-2deg) translateX(-3px);
+  }
+  40% {
+    transform: skewX(2deg) translateX(3px);
+  }
+  70% {
+    transform: skewX(-1deg) translateX(-1px);
+  }
+  90% {
+    transform: skewX(0.5deg) translateX(1px);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+.ascii-art.glitch-active {
+  animation: glitch 150ms ease-in-out;
+}

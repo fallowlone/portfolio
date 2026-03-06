@@ -12,6 +12,29 @@ export function createFontCommand(
   return {
     name: "font",
     description: "Switch terminal font  (usage: font [name])",
+    manPage: `NAME
+    font — switch terminal font
+
+SYNOPSIS
+    font [name]
+
+DESCRIPTION
+    With no arguments, lists all available fonts with the
+    current font marked by ▶.
+    With a font name, applies that font immediately.
+    Google Fonts are loaded lazily on first use.
+
+    Available fonts: courier, jetbrains, fira, ibm
+    The selection is saved to localStorage and restored on
+    next visit.
+
+EXAMPLES
+    font
+    font jetbrains
+    font fira
+
+SEE ALSO
+    theme(1)`,
     argSuggestions: (partial: string): string[] =>
       Object.keys(FONTS).filter((k) => k.startsWith(partial)),
 

@@ -1,11 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <title>Artem Hrechuk — Terminal Portfolio</title>
-    <script type="module" crossorigin src="/assets/index-Dq3yppcf.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BGne_S56.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script type="module" crossorigin src="/assets/index-Uyc0jynw.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-aq23M1PU.css">
   </head>
   <body>
     <!-- Layer 0: Matrix rain canvas (behind everything) -->
@@ -13,11 +21,26 @@
 
     <!-- Layer 1: Terminal window (above canvas) -->
     <div id="terminal">
-      <div id="output" role="log" aria-live="polite" aria-label="Terminal output"></div>
+      <div
+        id="output"
+        role="log"
+        aria-live="polite"
+        aria-label="Terminal output"
+      ></div>
+
+      <!-- Mobile-only toolbar: shown on touch devices via CSS -->
+      <div id="mobile-toolbar" aria-hidden="true">
+        <button class="mob-btn" data-action="tab">TAB</button>
+        <button class="mob-btn" data-action="up">↑</button>
+        <button class="mob-btn" data-action="down">↓</button>
+        <button class="mob-btn" data-action="ctrlc">⌃C</button>
+      </div>
 
       <div id="input-row">
-        <span id="prompt-symbol" aria-hidden="true">visitor@artmac:~$&nbsp;</span>
+        <span id="prompt-symbol" aria-hidden="true">visitor@user:~$&nbsp;</span>
         <div id="input-wrapper">
+          <span id="input-display" aria-hidden="true"></span
+          ><span class="cursor" id="cursor" aria-hidden="true"></span>
           <input
             id="input-field"
             type="text"
@@ -26,8 +49,9 @@
             autocapitalize="off"
             spellcheck="false"
             aria-label="Terminal input"
+            inputmode="text"
+            enterkeyhint="send"
           />
-          <span class="cursor" id="cursor" aria-hidden="true"></span>
         </div>
       </div>
     </div>

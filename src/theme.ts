@@ -176,6 +176,9 @@ export class ThemeManager {
     root.style.setProperty("--c-matrix", def.matrixColor);
     root.style.setProperty("--c-matrix-head", def.matrixHead);
 
+    // Used by CSS to conditionally show/hide effects (e.g. CRT scanlines)
+    root.dataset.theme = name;
+
     this.currentTheme = name;
     localStorage.setItem(LS_THEME, name);
     return true;

@@ -9,24 +9,33 @@ interface Link {
 const LINKS: Link[] = [
   {
     label: 'GitHub',
-    url: 'https://github.com/artmac',
-    description: 'Source code & open source contributions',
+    url: 'https://github.com/fallowlone',
+    description: 'Fallowlone on GitHub',
   },
   {
     label: 'LinkedIn',
-    url: 'https://linkedin.com/in/artmac',
-    description: 'Professional profile',
+    url: 'https://linkedin.com/in/artem-hrechuk',
+    description: 'Full Stack Developer · Based in Germany',
   },
-  {
-    label: 'Email',
-    url: 'mailto:artem@example.com',
-    description: 'Get in touch',
-  },
+  // TODO: add email
 ]
 
 export const linksCommand: CommandDef = {
   name: 'links',
   description: 'Social links and contact info',
+  manPage: `NAME
+    links — display contact and social links
+
+SYNOPSIS
+    links
+
+DESCRIPTION
+    Shows GitHub, LinkedIn, and other contact links
+    for Artem Hrechuk (Fallowlone).
+
+SEE ALSO
+    about(1)`,
+
   execute: (_args, _ctx): OutputLine[] => {
     const lines: OutputLine[] = [
       { text: '╔══════════════════════════════════════════╗', className: 'separator' },

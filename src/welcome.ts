@@ -31,7 +31,7 @@ export const WELCOME_LINES: Array<{ text: string; className?: string }> = [
   },
   { text: "  ║   ARTEM  HRECHUK        ║", className: "accent mobile-only" },
   {
-    text: "  ║   Software Engineer     ║",
+    text: "  ║   Full Stack Developer   ║",
     className: "welcome-info mobile-only",
   },
   {
@@ -55,7 +55,8 @@ export const WELCOME_LINES: Array<{ text: string; className?: string }> = [
     className: "welcome-info desktop-only",
   },
   { text: "" },
-  { text: "  Type  help  to see available commands.", className: "accent" },
+  { text: "  Type  help      to see available commands.", className: "accent" },
+  { text: "  Type  neofetch  for system info.", className: "dim" },
   {
     text: "  Use   Tab   for autocomplete,  ↑/↓   for history.",
     className: "dim desktop-only",

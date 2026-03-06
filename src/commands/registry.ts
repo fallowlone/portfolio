@@ -12,6 +12,12 @@ export interface TerminalContext {
 export interface CommandDef {
   name: string;
   description: string;
+  /** If true, command is omitted from `help` output (easter eggs, internals). */
+  hidden?: boolean;
+  /** Manual page text — displayed by `man <command>`. Multi-line string. */
+  manPage?: string;
+  /** If true, Terminal uses printLinesAnimated for this command's output. */
+  animated?: boolean;
   execute: (args: string[], ctx: TerminalContext) => OutputLine[];
   /**
    * Optional: return argument suggestions for Tab-completion.

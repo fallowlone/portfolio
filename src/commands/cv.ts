@@ -1,12 +1,25 @@
 import type { CommandDef, OutputLine } from './registry'
 
-// Set CV_AVAILABLE to true and update CV_FILENAME once you add cv.pdf to public/
+// Set CV_AVAILABLE to true and add cv.pdf to public/ once ready
 const CV_AVAILABLE = false
 const CV_FILENAME = 'Artem_Hrechuk_CV.pdf'
 
 export const cvCommand: CommandDef = {
   name: 'cv',
   description: 'Download my CV / resume',
+  manPage: `NAME
+    cv — download CV / resume
+
+SYNOPSIS
+    cv
+
+DESCRIPTION
+    Downloads the CV PDF file when available.
+    Currently unavailable — check back soon.
+
+SEE ALSO
+    about(1), links(1)`,
+
   execute: (_args, _ctx): OutputLine[] => {
     if (!CV_AVAILABLE) {
       return [

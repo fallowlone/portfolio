@@ -7,6 +7,9 @@ import { WELCOME_LINES } from "./welcome";
 /** Maximum output lines kept in DOM. Older lines are pruned automatically. */
 const MAX_OUTPUT_LINES = 400;
 
+/** Default milliseconds per character for typewriter animation. */
+const MS_PER_CHAR = 12;
+
 export class Terminal {
   private outputEl: HTMLElement;
   private inputEl: HTMLInputElement;
@@ -39,6 +42,7 @@ export class Terminal {
     this.bindEvents();
     this.bindMobileToolbar();
     this.setupVisualViewport();
+    this.setupGlitch();
   }
 
   // ── Event binding ──────────────────────────────────────────────────────────
@@ -106,6 +110,25 @@ export class Terminal {
     update();
   }
 
+  /**
+   * Periodically trigger a glitch animation on all .ascii-art elements.
+   * The interval is randomised between 8 and 15 seconds.
+   */
+  private setupGlitch(): void {
+    const schedule = () => {
+      const delay = 8000 + Math.random() * 7000;
+      setTimeout(() => {
+        const elements = document.querySelectorAll<HTMLElement>(".ascii-art");
+        elements.forEach((el) => {
+          el.classList.add("glitch-active");
+          setTimeout(() => el.classList.remove("glitch-active"), 150);
+        });
+        schedule();
+      }, delay);
+    };
+    schedule();
+  }
+
   // ── Keyboard handler (desktop) ─────────────────────────────────────────────
 
   private handleKeydown(e: KeyboardEvent): void {
@@ -150,10 +173,22 @@ export class Terminal {
 
     if (value.trim()) {
       this.printCommandEcho(value);
+      const [name] = value.trim().toLowerCase().split(/\s+/);
+      const cmd = this.registry.get(name);
       const output = this.registry.execute(value, this.ctx);
-      this.printLines(output);
+
+      if (cmd?.animated) {
+        // Fire-and-forget: animation runs while user can still interact
+        this.printLinesAnimated(output).then(() => {
+          this.trimOutput();
+          this.scrollToBottom();
+        });
+      } else {
+        this.printLines(output);
+        this.trimOutput();
+      }
+
       this.history.push(value);
-      this.trimOutput();
     }
 
     this.scrollToBottom();
@@ -242,6 +277,54 @@ export class Terminal {
   }
 
   /**
+   * Print lines with a typewriter effect (char by char).
+   *
+   * Rules:
+   *  - Empty lines → instant
+   *  - Lines with href → instant (rendered as links)
+   *  - Lines with className containing 'separator' or 'ascii-art' → instant
+   *  - All other lines → animated at msPerChar ms per character
+   */
+  async printLinesAnimated(lines: OutputLine[], msPerChar = MS_PER_CHAR): Promise<void> {
+    for (const line of lines) {
+      const p = document.createElement("p");
+      p.className = `output-line${line.className ? ` ${line.className}` : ""}`;
+
+      const instant =
+        !line.text ||
+        line.href !== undefined ||
+        line.className?.includes("separator") ||
+        line.className?.includes("ascii-art");
+
+      if (instant) {
+        if (line.href) {
+          const a = document.createElement("a");
+          a.href = line.href;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = line.text;
+          p.appendChild(a);
+        } else {
+          p.textContent = line.text;
+        }
+        this.outputEl.appendChild(p);
+        continue;
+      }
+
+      // Typewriter: reveal one character at a time
+      this.outputEl.appendChild(p);
+      for (let i = 0; i <= line.text.length; i++) {
+        p.textContent = line.text.slice(0, i);
+        this.scrollToBottom();
+        if (i < line.text.length) {
+          await new Promise<void>((resolve) => setTimeout(resolve, msPerChar));
+        }
+      }
+    }
+    this.scrollToBottom();
+  }
+
+  /**
    * Prune the oldest output lines once the DOM exceeds MAX_OUTPUT_LINES.
    * Keeps memory usage bounded during long sessions.
    */
@@ -253,8 +336,8 @@ export class Terminal {
   }
 
   private showWelcome(): void {
-    this.printLines(WELCOME_LINES);
-    this.scrollToBottom();
+    // Fire-and-forget animated welcome
+    this.printLinesAnimated(WELCOME_LINES);
   }
 
   scrollToBottom(): void {

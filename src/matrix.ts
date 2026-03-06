@@ -56,13 +56,18 @@ export class MatrixRain {
     const colWidth = window.innerWidth < 768 ? FONT_SIZE * 1.5 : FONT_SIZE;
     ctx.font = `${FONT_SIZE}px monospace`;
 
+    // Read theme colours from CSS variables (updated by ThemeManager)
+    const rootStyle = getComputedStyle(document.documentElement);
+    const matrixColor = rootStyle.getPropertyValue("--c-matrix").trim() || "#00ff41";
+    const matrixHead = rootStyle.getPropertyValue("--c-matrix-head").trim() || "#ccffcc";
+
     for (let i = 0; i < this.drops.length; i++) {
       const char = CHARS[Math.floor(Math.random() * CHARS.length)];
       const x = i * colWidth;
       const y = this.drops[i] * FONT_SIZE;
 
       const isHead = Math.random() > 0.92;
-      ctx.fillStyle = isHead ? "#ccffcc" : "#00ff41";
+      ctx.fillStyle = isHead ? matrixHead : matrixColor;
       ctx.fillText(char, x, y);
 
       if (y > canvas.height && Math.random() > 0.975) {

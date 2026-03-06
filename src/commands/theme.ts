@@ -12,6 +12,28 @@ export function createThemeCommand(
   return {
     name: "theme",
     description: "Switch colour theme  (usage: theme [name])",
+    manPage: `NAME
+    theme — switch colour theme
+
+SYNOPSIS
+    theme [name]
+
+DESCRIPTION
+    With no arguments, lists all available themes with the
+    current theme marked by ▶.
+    With a theme name, applies that theme immediately.
+
+    Available themes: matrix, amber, cyan, white
+    The selection is saved to localStorage and restored on
+    next visit.
+
+EXAMPLES
+    theme
+    theme amber
+    theme cyan
+
+SEE ALSO
+    font(1)`,
     argSuggestions: (partial: string): string[] =>
       Object.keys(THEMES).filter((k) => k.startsWith(partial)),
 
