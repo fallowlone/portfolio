@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artem Hrechuk — Terminal Portfolio</title>
+    <link rel="stylesheet" href="/src/styles/main.css" />
+  </head>
+  <body>
+    <!-- Layer 0: Matrix rain canvas (behind everything) -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Layer 1: Terminal window (above canvas) -->
+    <div id="terminal">
+      <div id="output" role="log" aria-live="polite" aria-label="Terminal output"></div>
+
+      <div id="input-row">
+        <span id="prompt-symbol" aria-hidden="true">visitor@user:~$&nbsp;</span>
+        <div id="input-wrapper">
+          <!-- #input-display mirrors typed text so the cursor always follows it -->
+          <span id="input-display" aria-hidden="true"></span><span class="cursor" id="cursor" aria-hidden="true"></span>
+          <input
+            id="input-field"
+            type="text"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            aria-label="Terminal input"
+          />
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

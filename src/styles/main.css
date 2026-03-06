@@ -1,0 +1,200 @@
+/* ========== Reset & Base ========== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Courier New', 'Lucida Console', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ========== Matrix Canvas ========== */
+#matrix-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ========== Terminal Container ========== */
+#terminal {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.82);
+  color: #00ff41;
+  overflow: hidden;
+}
+
+/* ========== Output Area ========== */
+#output {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 20px 24px 12px;
+  scroll-behavior: smooth;
+}
+
+#output::-webkit-scrollbar {
+  width: 6px;
+}
+
+#output::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#output::-webkit-scrollbar-thumb {
+  background: #003300;
+  border-radius: 3px;
+}
+
+#output::-webkit-scrollbar-thumb:hover {
+  background: #006600;
+}
+
+/* ========== Output Lines ========== */
+.output-line {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  padding: 1px 0;
+  color: #00ff41;
+}
+
+.output-line.command-echo {
+  color: #00cc33;
+  margin-top: 8px;
+}
+
+.output-line.output-gap {
+  height: 6px;
+}
+
+.output-line.dim {
+  color: #005500;
+}
+
+.output-line.error {
+  color: #ff3333;
+}
+
+.output-line.accent {
+  color: #00ffaa;
+}
+
+.output-line.separator {
+  color: #003300;
+}
+
+.output-line a {
+  color: #ffb000;
+  text-decoration: none;
+}
+
+.output-line a:hover {
+  text-decoration: underline;
+}
+
+/* Welcome / ASCII art */
+.output-line.ascii-art {
+  color: #00ff41;
+  line-height: 1.2;
+}
+
+.output-line.welcome-info {
+  color: #00cc88;
+}
+
+/* ========== Input Row ========== */
+#input-row {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 10px 24px;
+  border-top: 1px solid #002200;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+#prompt-symbol {
+  color: #00ff41;
+  white-space: nowrap;
+  user-select: none;
+  flex-shrink: 0;
+  font-weight: bold;
+}
+
+#input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Mirrors typed text — cursor naturally follows it inline */
+#input-display {
+  white-space: pre;
+  color: #00ff41;
+  pointer-events: none;
+  flex-shrink: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Real input is invisible and covers the wrapper — captures all keyboard input */
+#input-field {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  caret-color: transparent;
+  z-index: 1;
+}
+
+/* ========== Blinking Cursor ========== */
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.1em;
+  background: #00ff41;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ========== Autocomplete hint ========== */
+.output-line.tab-hint {
+  color: #007700;
+  font-style: italic;
+}
+
+/* ========== Scrollbar for Firefox ========== */
+#output {
+  scrollbar-width: thin;
+  scrollbar-color: #003300 transparent;
+}

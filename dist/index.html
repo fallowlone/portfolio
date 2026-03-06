@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artem Hrechuk — Terminal Portfolio</title>
+    <script type="module" crossorigin src="/assets/index-Dq3yppcf.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BGne_S56.css">
+  </head>
+  <body>
+    <!-- Layer 0: Matrix rain canvas (behind everything) -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Layer 1: Terminal window (above canvas) -->
+    <div id="terminal">
+      <div id="output" role="log" aria-live="polite" aria-label="Terminal output"></div>
+
+      <div id="input-row">
+        <span id="prompt-symbol" aria-hidden="true">visitor@artmac:~$&nbsp;</span>
+        <div id="input-wrapper">
+          <input
+            id="input-field"
+            type="text"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            aria-label="Terminal input"
+          />
+          <span class="cursor" id="cursor" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
