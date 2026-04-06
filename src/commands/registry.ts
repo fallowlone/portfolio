@@ -3,6 +3,8 @@ export interface OutputLine {
   className?: string;
   /** If set, the text is rendered as an anchor with this href */
   href?: string;
+  /** If set, clicking the text runs this command */
+  cmd?: string;
 }
 
 export interface TerminalContext {

@@ -1,7 +1,9 @@
+import type { OutputLine } from "./commands/registry";
+
 // ASCII art generated with figlet "Big" font for "Artem Hrechuk"
 // Desktop: full wide art (~72 chars) — hidden on mobile via .desktop-only CSS class
 // Mobile:  compact box header    (~28 chars) — hidden on desktop via .mobile-only CSS class
-export const WELCOME_LINES: Array<{ text: string; className?: string }> = [
+export const WELCOME_LINES: OutputLine[] = [
   // ── Desktop ASCII art (hidden on small screens) ───────────────────────────
   {
     text: "    _         _                 _   _               _           _  ",
@@ -54,9 +56,21 @@ export const WELCOME_LINES: Array<{ text: string; className?: string }> = [
     text: "  Software Engineer & Developer",
     className: "welcome-info desktop-only",
   },
+  {
+    text: "  Based in Germany · §24 permit · Open to EU roles",
+    className: "dim desktop-only",
+  },
   { text: "" },
-  { text: "  Type  help      to see available commands.", className: "accent" },
-  { text: "  Type  neofetch  for system info.", className: "dim" },
+  {
+    text: "  Type  help      to see available commands.",
+    className: "accent",
+    cmd: "help",
+  },
+  {
+    text: "  Type  neofetch  for system info.",
+    className: "dim",
+    cmd: "neofetch",
+  },
   {
     text: "  Use   Tab   for autocomplete,  ↑/↓   for history.",
     className: "dim desktop-only",

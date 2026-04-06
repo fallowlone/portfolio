@@ -146,6 +146,11 @@ const LS_FONT = "terminal-font";
 export class ThemeManager {
   private currentTheme: string;
   private currentFont: string;
+  private rain: { updateColors(): void } | null = null;
+
+  setRain(rain: { updateColors(): void }): void {
+    this.rain = rain;
+  }
 
   constructor() {
     // Restore saved preferences, falling back to defaults
@@ -181,6 +186,15 @@ export class ThemeManager {
 
     this.currentTheme = name;
     localStorage.setItem(LS_THEME, name);
+
+    // Update matrix rain colors and trigger glitch on ASCII art
+    this.rain?.updateColors();
+    const elements = document.querySelectorAll<HTMLElement>(".ascii-art");
+    elements.forEach((el) => {
+      el.classList.add("glitch-active");
+      setTimeout(() => el.classList.remove("glitch-active"), 150);
+    });
+
     return true;
   }
 

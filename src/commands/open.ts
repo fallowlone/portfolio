@@ -1,10 +1,10 @@
-import type { CommandDef, OutputLine } from './registry'
-import { PROJECTS } from './projects'
+import type { CommandDef, OutputLine } from "./registry";
+import { PROJECTS } from "./projects";
 
 export function createOpenCommand(): CommandDef {
   return {
-    name: 'open',
-    description: 'Open project URL in new tab  (usage: open <N>)',
+    name: "open",
+    description: "Open project URL in new tab  (usage: open <N>)",
     manPage: `NAME
     open — open a project URL in a new browser tab
 
@@ -23,37 +23,48 @@ SEE ALSO
     projects(1)`,
 
     argSuggestions: (partial: string): string[] =>
-      PROJECTS.map((_, i) => String(i + 1)).filter((s) => s.startsWith(partial)),
+      PROJECTS.map((_, i) => String(i + 1)).filter((s) =>
+        s.startsWith(partial),
+      ),
 
     execute: (args, _ctx): OutputLine[] => {
       if (args.length === 0) {
         return [
-          { text: '' },
-          { text: '  Usage: open <N>  (see projects for numbers)', className: 'dim' },
-          { text: '' },
-        ]
+          { text: "" },
+          {
+            text: "  Usage: open <N>  (see projects for numbers)",
+            className: "dim",
+          },
+          { text: "" },
+        ];
       }
 
-      const n = parseInt(args[0], 10)
+      const n = parseInt(args[0], 10);
 
       if (isNaN(n) || n < 1 || n > PROJECTS.length) {
         return [
-          { text: '' },
-          { text: `  Invalid project number: "${args[0]}"`, className: 'error' },
-          { text: `  Valid range: 1–${PROJECTS.length}  (run projects to see list)`, className: 'dim' },
-          { text: '' },
-        ]
+          { text: "" },
+          {
+            text: `  Invalid project number: "${args[0]}"`,
+            className: "error",
+          },
+          {
+            text: `  Valid range: 1–${PROJECTS.length}  (run projects to see list)`,
+            className: "dim",
+          },
+          { text: "" },
+        ];
       }
 
-      const project = PROJECTS[n - 1]
-      window.open(project.url, '_blank', 'noopener,noreferrer')
+      const project = PROJECTS[n - 1];
+      window.open(project.url, "_blank", "noopener,noreferrer");
 
       return [
-        { text: '' },
-        { text: `  Opening ${project.name}...`, className: 'accent' },
-        { text: `  ${project.url}`, className: 'dim' },
-        { text: '' },
-      ]
+        { text: "" },
+        { text: `  Opening ${project.name}...`, className: "accent" },
+        { text: `  ${project.url}`, className: "dim" },
+        { text: "" },
+      ];
     },
-  }
+  };
 }

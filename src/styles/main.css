@@ -147,6 +147,15 @@ body {
   text-decoration: underline;
 }
 
+.cmd-link {
+  color: var(--c-accent);
+  cursor: pointer;
+  text-decoration: underline dotted;
+}
+.cmd-link:hover {
+  color: var(--c-primary);
+}
+
 .output-line.ascii-art {
   color: var(--c-primary);
   line-height: 1.2;
@@ -383,4 +392,174 @@ html[data-theme="white"] body::after {
 
 .ascii-art.glitch-active {
   animation: glitch 150ms ease-in-out;
+}
+
+/* ========== Terminal Shake ========== */
+@keyframes terminal-shake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-3px, 1px);
+  }
+  20% {
+    transform: translate(3px, -1px);
+  }
+  30% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+  50% {
+    transform: translate(-1px, 1px);
+  }
+  60% {
+    transform: translate(1px, -1px);
+  }
+  70% {
+    transform: translate(-1px, 0);
+  }
+  80% {
+    transform: translate(1px, 0);
+  }
+}
+
+#terminal.shake-active {
+  animation: terminal-shake 300ms ease-out;
+}
+
+/* ========== Particle Burst ========== */
+@keyframes particle-fly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0.3);
+  }
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--c-accent);
+  box-shadow: 0 0 4px var(--c-accent);
+  animation: particle-fly 500ms ease-out forwards;
+  pointer-events: none;
+}
+
+/* ========== CRT Power-On ========== */
+@keyframes crt-on {
+  0% {
+    opacity: 1;
+    transform: scaleY(0.005) scaleX(0.5);
+    background: white;
+  }
+  30% {
+    opacity: 1;
+    transform: scaleY(0.005) scaleX(1);
+    background: white;
+  }
+  50% {
+    opacity: 0.8;
+    transform: scaleY(1) scaleX(1);
+    background: white;
+  }
+  70% {
+    opacity: 0.3;
+    background: var(--c-primary);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleY(1) scaleX(1);
+    background: transparent;
+  }
+}
+
+.crt-power-on {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  animation: crt-on 800ms ease-out forwards;
+}
+
+/* ========== Phosphor Glow ========== */
+#terminal {
+  text-shadow: 0 0 1px color-mix(in srgb, var(--c-primary) 40%, transparent);
+}
+
+html[data-theme="white"] #terminal {
+  text-shadow: none;
+}
+
+/* ========== Vignette ========== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+html[data-theme="white"] body::before {
+  display: none;
+}
+
+/* ========== Scanline Flicker ========== */
+@keyframes scanline-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+body.scanline-flicker::after {
+  animation: scanline-pulse 150ms ease-in-out;
+}
+
+/* ========== Reduced Motion ========== */
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    animation: none;
+    opacity: 1;
+  }
+  #matrix-canvas {
+    display: none;
+  }
+  .ascii-art.glitch-active {
+    animation: none;
+  }
+  body::after {
+    display: none;
+  }
+  body::before {
+    display: none;
+  }
+  #output {
+    scroll-behavior: auto;
+  }
+  #terminal {
+    text-shadow: none;
+  }
+  #terminal.shake-active {
+    animation: none;
+  }
+  .crt-power-on {
+    animation: none;
+    opacity: 0;
+  }
 }

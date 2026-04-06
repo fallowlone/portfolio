@@ -1,21 +1,30 @@
-import type { CommandDef, OutputLine } from './registry'
+import type { CommandDef, OutputLine } from "./registry";
 
 interface SkillCategory {
-  label: string
-  skills: string
+  label: string;
+  skills: string;
 }
 
 const SKILL_CATEGORIES: SkillCategory[] = [
-  { label: 'Frontend  ', skills: 'TypeScript · JavaScript · React · Next.js · React Native' },
-  { label: 'Backend   ', skills: 'Node.js · tRPC · NestJS (learning) · REST · WebSocket' },
-  { label: 'Database  ', skills: 'PostgreSQL · Prisma · SQL basics' },
-  { label: 'Tooling   ', skills: 'Git · Vite · ESBuild · Docker (basics) · Linux/CLI' },
-  { label: 'Currently ', skills: 'NestJS · System Design · German (B1)' },
-]
+  {
+    label: "Frontend  ",
+    skills: "TypeScript · JavaScript · React · Next.js · React Native",
+  },
+  {
+    label: "Backend   ",
+    skills: "Node.js · tRPC · NestJS (learning) · REST · WebSocket",
+  },
+  { label: "Database  ", skills: "PostgreSQL · Prisma · SQL basics" },
+  {
+    label: "Tooling   ",
+    skills: "Git · Vite · ESBuild · Docker (basics) · Linux/CLI",
+  },
+  { label: "Currently ", skills: "NestJS · System Design · German (B1)" },
+];
 
 export const skillsCommand: CommandDef = {
-  name: 'skills',
-  description: 'My technical skills by category',
+  name: "skills",
+  description: "My technical skills by category",
   manPage: `NAME
     skills — display technical skills
 
@@ -31,28 +40,41 @@ SEE ALSO
 
   execute: (_args, _ctx): OutputLine[] => {
     const lines: OutputLine[] = [
-      { text: '╔══════════════════════════════════════════════════════════╗', className: 'separator' },
-      { text: '║                   TECHNICAL SKILLS                       ║', className: 'accent' },
-      { text: '╠══════════════════════════════════════════════════════════╣', className: 'separator' },
-      { text: '' },
-    ]
+      {
+        text: "╔══════════════════════════════════════════════════════════╗",
+        className: "separator",
+      },
+      {
+        text: "║                   TECHNICAL SKILLS                       ║",
+        className: "accent",
+      },
+      {
+        text: "╠══════════════════════════════════════════════════════════╣",
+        className: "separator",
+      },
+      { text: "" },
+    ];
 
     for (const cat of SKILL_CATEGORIES) {
       lines.push({
         text: `  ${cat.label}  ${cat.skills}`,
-        className: cat.label.trim() === 'Currently' ? 'welcome-info' : 'output-line',
-      })
+        className:
+          cat.label.trim() === "Currently" ? "welcome-info" : "output-line",
+      });
     }
 
-    lines.push({ text: '' })
+    lines.push({ text: "" });
     lines.push({
-      text: '╚══════════════════════════════════════════════════════════╝',
-      className: 'separator',
-    })
-    lines.push({ text: '' })
-    lines.push({ text: '  Run  about  for background, or  projects  to see my work.', className: 'dim' })
-    lines.push({ text: '' })
+      text: "╚══════════════════════════════════════════════════════════╝",
+      className: "separator",
+    });
+    lines.push({ text: "" });
+    lines.push({
+      text: "  Run  about  for background, or  projects  to see my work.",
+      className: "dim",
+    });
+    lines.push({ text: "" });
 
-    return lines
+    return lines;
   },
-}
+};

@@ -59,8 +59,9 @@ export class Autocomplete {
 
     const all = cmd.argSuggestions(argPart);
 
-    // Filter by prefix if the user has started typing the argument
+    // Filter by prefix if the user has started typing the argument (case-insensitive)
     if (!argPart) return all;
-    return all.filter((s) => s.startsWith(argPart));
+    const lower = argPart.toLowerCase();
+    return all.filter((s) => s.toLowerCase().startsWith(lower));
   }
 }

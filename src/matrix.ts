@@ -12,12 +12,27 @@ export class MatrixRain {
   private drops: number[] = [];
   private frameCount = 0;
   private animationId = 0;
+  private matrixColor = "#00ff41";
+  private matrixHead = "#ccffcc";
+  private resizeTimer = 0;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d")!;
+    this.updateColors();
     this.resize();
-    window.addEventListener("resize", () => this.resize());
+    window.addEventListener("resize", () => {
+      clearTimeout(this.resizeTimer);
+      this.resizeTimer = window.setTimeout(() => this.resize(), 150);
+    });
+  }
+
+  updateColors(): void {
+    const rootStyle = getComputedStyle(document.documentElement);
+    this.matrixColor =
+      rootStyle.getPropertyValue("--c-matrix").trim() || "#00ff41";
+    this.matrixHead =
+      rootStyle.getPropertyValue("--c-matrix-head").trim() || "#ccffcc";
   }
 
   /**
@@ -56,18 +71,13 @@ export class MatrixRain {
     const colWidth = window.innerWidth < 768 ? FONT_SIZE * 1.5 : FONT_SIZE;
     ctx.font = `${FONT_SIZE}px monospace`;
 
-    // Read theme colours from CSS variables (updated by ThemeManager)
-    const rootStyle = getComputedStyle(document.documentElement);
-    const matrixColor = rootStyle.getPropertyValue("--c-matrix").trim() || "#00ff41";
-    const matrixHead = rootStyle.getPropertyValue("--c-matrix-head").trim() || "#ccffcc";
-
     for (let i = 0; i < this.drops.length; i++) {
       const char = CHARS[Math.floor(Math.random() * CHARS.length)];
       const x = i * colWidth;
       const y = this.drops[i] * FONT_SIZE;
 
       const isHead = Math.random() > 0.92;
-      ctx.fillStyle = isHead ? matrixHead : matrixColor;
+      ctx.fillStyle = isHead ? this.matrixHead : this.matrixColor;
       ctx.fillText(char, x, y);
 
       if (y > canvas.height && Math.random() > 0.975) {
@@ -79,6 +89,9 @@ export class MatrixRain {
   }
 
   start(): void {
+    // Respect prefers-reduced-motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const loop = () => {
       this.frameCount++;
       if (this.frameCount % this.frameSkip === 0) {

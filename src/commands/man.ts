@@ -1,10 +1,10 @@
-import type { CommandDef, OutputLine } from './registry'
-import type { CommandRegistry } from './registry'
+import type { CommandDef, OutputLine } from "./registry";
+import type { CommandRegistry } from "./registry";
 
 export function createManCommand(registry: CommandRegistry): CommandDef {
   return {
-    name: 'man',
-    description: 'Show manual page for a command  (usage: man <command>)',
+    name: "man",
+    description: "Show manual page for a command  (usage: man <command>)",
     manPage: `NAME
     man — display manual for a command
 
@@ -29,36 +29,39 @@ SEE ALSO
     execute: (args, _ctx): OutputLine[] => {
       if (args.length === 0) {
         return [
-          { text: '' },
-          { text: '  What manual page do you want?', className: 'error' },
-          { text: '  Usage: man <command>', className: 'dim' },
-          { text: '' },
-        ]
+          { text: "" },
+          { text: "  What manual page do you want?", className: "error" },
+          { text: "  Usage: man <command>", className: "dim" },
+          { text: "" },
+        ];
       }
 
-      const name = args[0].toLowerCase()
-      const cmd = registry.get(name)
+      const name = args[0].toLowerCase();
+      const cmd = registry.get(name);
 
       if (!cmd || !cmd.manPage) {
         return [
-          { text: '' },
-          { text: `  No manual entry for ${name}`, className: 'error' },
-          { text: '' },
-        ]
+          { text: "" },
+          { text: `  No manual entry for ${name}`, className: "error" },
+          { text: "" },
+        ];
       }
 
-      const lines: OutputLine[] = [{ text: '' }]
-      for (const line of cmd.manPage.split('\n')) {
+      const lines: OutputLine[] = [{ text: "" }];
+      for (const line of cmd.manPage.split("\n")) {
         // Section headers (all-caps lines like "NAME", "SYNOPSIS") get accent colour
-        const trimmed = line.trim()
-        const isHeader = /^[A-Z ]+$/.test(trimmed) && trimmed.length > 0 && !trimmed.includes('(')
+        const trimmed = line.trim();
+        const isHeader =
+          /^[A-Z ]+$/.test(trimmed) &&
+          trimmed.length > 0 &&
+          !trimmed.includes("(");
         lines.push({
           text: line,
-          className: isHeader ? 'accent' : 'output-line',
-        })
+          className: isHeader ? "accent" : "output-line",
+        });
       }
-      lines.push({ text: '' })
-      return lines
+      lines.push({ text: "" });
+      return lines;
     },
-  }
+  };
 }
